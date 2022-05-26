@@ -26,4 +26,4 @@ navigator.serviceWorker.register('sw.js').then( registration => {
 // Log errors
 }).catch(console.error)
 
-fetch('http://localhost:3333').then( res => res.text() ).then(console.log)
+fetch('http://localhost:3333/subscribe', {method: 'POST'}).then( res => res.text() ).then(console.log)
