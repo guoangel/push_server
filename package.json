@@ -1,0 +1,11 @@
+{
+  "name": "push_server",
+  "version": "1.0.0",
+  "description": "Web Push Server",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "nodemon server/index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
