@@ -4,8 +4,13 @@
   "description": "Web Push Server",
   "main": "server/index.js",
   "scripts": {
-    "start": "nodemon server/index.js"
+    "start": "node server/",
+    "vapid": "node_modules/web-push/src/cli.js generate-vapid-keys --json > server/vapid.json"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "urlsafe-base64": "^1.0.0",
+    "web-push": "^3.5.0"
+  }
 }

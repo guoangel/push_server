@@ -1,5 +1,6 @@
 // Modules
 const http = require('http')
+const push = require('./push')
 
 // Create HTTP Server
 http.createServer( (request, response) => {
@@ -25,8 +26,8 @@ http.createServer( (request, response) => {
   // Public Key
   } else if ( url.match(/^\/key\/?/) ) {
 
-    // Respond with public key
-    response.end('public key')
+    // Respond with public key from push module
+    response.end( push.getKey() )
 
   // Push Notification
   } else if ( method === 'POST' && url.match(/^\/push\/?/) ) {

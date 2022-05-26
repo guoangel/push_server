@@ -2,6 +2,9 @@
 // Service Worker Registration
 let swReg
 
+// Push Server url
+const serverUrl = 'http://localhost:3333'
+
 // Update UI for subscribed status
 const setSubscribedStatus = (state) => {
 
@@ -26,4 +29,29 @@ navigator.serviceWorker.register('sw.js').then( registration => {
 // Log errors
 }).catch(console.error)
 
-fetch('http://localhost:3333/subscribe', {method: 'POST'}).then( res => res.text() ).then(console.log)
+
+// Get public key
+const getApplicationServerKey = () => {
+
+  // Fetch from server
+  return fetch(`${serverUrl}/key`)
+
+    // Parse response body as arrayBuffer
+    .then( res => res.arrayBuffer() )
+
+    // Return arrayBuffer as new UInt8Array
+    .then( key => new Uint8Array(key) )
+}
+
+// Subscribe for push notifications
+const subscribe = () => {
+
+  // Check registration is available
+  if ( !swReg ) return console.error('Service Worker Registration Not Found')
+
+  // Get applicationServerKey from push server
+  getApplicationServerKey().then( key => {
+
+    // swReg.pushManager.subscribe( {userVisibleOnly: true, applicationServerKey: publicKey} )
+  })
+}
