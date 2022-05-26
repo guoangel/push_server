@@ -20,6 +20,13 @@ http.createServer( (request, response) => {
     // Read body stream
     request.on( 'data', chunk => body.push(chunk) ).on( 'end', () => {
 
+      // Parse subscription body to object
+      let subscription = JSON.parse(body.toString())
+
+      // Store subscription for push notifications
+      push.addSubscription( subscription )
+
+      // Respond
       response.end('Subscribed')
     })
 

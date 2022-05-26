@@ -43,6 +43,17 @@ const getApplicationServerKey = () => {
     .then( key => new Uint8Array(key) )
 }
 
+// Unsubscribe from push service
+const unsubscribe = () => {
+
+  // Unsubscribe & update UI
+  swReg.pushManager.getSubscription().then( subscription => {
+    subscription.unsubscribe().then( () => {
+      setSubscribedStatus(false)
+    })
+  })
+}
+
 // Subscribe for push notifications
 const subscribe = () => {
 
@@ -50,8 +61,19 @@ const subscribe = () => {
   if ( !swReg ) return console.error('Service Worker Registration Not Found')
 
   // Get applicationServerKey from push server
-  getApplicationServerKey().then( key => {
+  getApplicationServerKey().then( applicationServerKey => {
 
-    // swReg.pushManager.subscribe( {userVisibleOnly: true, applicationServerKey: publicKey} )
+    // Subscribe
+    swReg.pushManager.subscribe( {userVisibleOnly: true, applicationServerKey} )
+      .then( res => res.toJSON() )
+      .then( subscription => {
+
+        // Pass subscription to server
+        fetch(`${serverUrl}/subscribe`, { method: 'POST', body: JSON.stringify(subscription) })
+          .then(setSubscribedStatus)
+          .catch(unsubscribe)
+
+      // Catch subscription error
+    }).catch(console.error)
   })
 }
